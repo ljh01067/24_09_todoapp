@@ -144,6 +144,11 @@ const NewTodoForm = ({ noticeSnackbarStatus }) => {
   );
 };
 const TodoListItem = ({ todo, index, openDrawer }) => {
+  const [isCompleted, setIsCompleted] = React.useState(false);
+
+  const handleToggleComplete = () => {
+    setIsCompleted((prev) => !prev);
+  };
   return (
     <>
       <li className="tw-mb-3" key={todo.id}>
@@ -158,14 +163,18 @@ const TodoListItem = ({ todo, index, openDrawer }) => {
             />
           </div>
           <div className="tw-rounded-[10px] tw-shadow tw-flex tw-text-[14px] tw-min-h-[80px]">
-            <Button className="tw-flex-shrink-0 tw-rounded-[10px_0_0_10px]" color="inherit">
+          <Button
+              className="tw-flex-shrink-0 tw-rounded-[10px_0_0_10px]"
+              color="inherit"
+              onClick={handleToggleComplete}
+            >
               <FaCheck
                 className={classNames(
                   'tw-text-3xl',
                   {
-                    'tw-text-[--mui-color-primary-main]': index % 2 == 0,
+                    'tw-text-[--mui-color-primary-main]': isCompleted,
                   },
-                  { 'tw-text-[#dcdcdc]': index % 2 != 0 },
+                  { 'tw-text-[#dcdcdc]': !isCompleted },
                 )}
               />
             </Button>
@@ -400,6 +409,13 @@ function App() {
 
   const noticeSnackbarStatus = useNoticeSnackbarStatus();
 
+  const toggleDrawer = (isOpen) => (event) => {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setOpen(isOpen);
+  };
+
   React.useEffect(() => {
     todosStatus.addTodo('스쿼트');
     todosStatus.addTodo('벤치프레스');
@@ -408,11 +424,16 @@ function App() {
 
   return (
     <>
-      <Snackbar open={open} autoHideDuration={4000} onClose={() => setOpen(false)}>
-        <Alert variant="filled" severity="sucess">
-          게시물 삭제됨
-        </Alert>
-      </Snackbar>
+      <SwipeableDrawer
+        anchor="left"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        <div style={{ width: 250, padding: 20 }}>
+          <h3>옵션 메뉴</h3>
+        </div>
+      </SwipeableDrawer>
       <AppBar position="fixed">
         <Toolbar>
           <div className="tw-flex-1">

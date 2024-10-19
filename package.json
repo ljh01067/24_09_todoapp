@@ -14,7 +14,7 @@
     "@capacitor/core": "^6.1.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/material": "^6.1.1",
+    "@mui/material": "^6.1.4",
     "classnames": "^2.5.1",
     "next": "14.2.13",
     "prettier": "^3.3.3",
